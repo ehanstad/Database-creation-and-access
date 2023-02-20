@@ -193,4 +193,14 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         }
         return customerSpender;
     }
+
+    //SELECT customer.customer_id, first_name, last_name, genre.name, COUNT(genre.name) AS frequence
+    //FROM customer, genre, invoice, invoice_line, track
+    //WHERE customer.customer_id = invoice.customer_id
+    //AND invoice.invoice_id = invoice_line.invoice_id
+    //AND invoice_line.track_id = track.track_id
+    //AND track.genre_id = genre.genre_id
+    //AND customer.customer_id = 4
+    //GROUP BY customer.customer_id, genre.name
+    //ORDER BY frequence DESC
 }
