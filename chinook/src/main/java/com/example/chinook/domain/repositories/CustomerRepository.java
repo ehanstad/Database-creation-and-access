@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CustomerRepository extends CRUDRepository<Customer, Integer> {
     List<Customer> findByName(String name);
+    List<Customer> findAll(int limit, int offset);
 }

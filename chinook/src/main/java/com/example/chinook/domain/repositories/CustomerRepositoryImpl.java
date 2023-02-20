@@ -1,6 +1,7 @@
 package com.example.chinook.domain.repositories;
 
 import com.example.chinook.domain.models.Customer;
+import com.example.chinook.domain.CustomerRepositoryHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -33,19 +34,22 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet result = statement.executeQuery();
+            customers = CustomerRepositoryHandler.processResultSet(statement.executeQuery());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return customers;
+    }
 
-            while(result.next()) {
-                Customer customer = new Customer (
-                        result.getInt("customer_id"),
-                        result.getString("first_name"),
-                        result.getString("last_name"),
-                        result.getString("country"),
-                        result.getString("postal_code"),
-                        result.getString("phone"),
-                        result.getString("email")
-                );
-                customers.add(customer);
-            }
+    @Override
+    public List<Customer> findAll(int limit, int offset) {
+        String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer LIMIT ? OFFSET ?";
+        List<Customer> customers = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            customers = CustomerRepositoryHandler.processResultSet(statement.executeQuery());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -60,18 +64,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                customer = new Customer(
-                        result.getInt("customer_id"),
-                        result.getString("first_name"),
-                        result.getString("last_name"),
-                        result.getString("country"),
-                        result.getString("postal_code"),
-                        result.getString("phone"),
-                        result.getString("email")
-                );
-            }
+            customer = CustomerRepositoryHandler.processResultSet(statement.executeQuery()).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,18 +90,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, firstName);
             statement.setString(2, lastName);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                customers.add(new Customer(
-                        result.getInt("customer_id"),
-                        result.getString("first_name"),
-                        result.getString("last_name"),
-                        result.getString("country"),
-                        result.getString("postal_code"),
-                        result.getString("phone"),
-                        result.getString("email")
-                ));
-            }
+            customers = CustomerRepositoryHandler.processResultSet(statement.executeQuery());
         } catch (SQLException e) {
             e.printStackTrace();
         }
