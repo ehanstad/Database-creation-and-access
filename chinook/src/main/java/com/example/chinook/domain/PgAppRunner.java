@@ -26,6 +26,7 @@ public class PgAppRunner implements ApplicationRunner {
         for (int i = 0; i < customers.size(); i++) {
             System.out.println(customers.get(i).firstName());
         }
-
+        Customer cust = customerRepository.findById(1);
+        System.out.println(cust.firstName());
     }
 }
