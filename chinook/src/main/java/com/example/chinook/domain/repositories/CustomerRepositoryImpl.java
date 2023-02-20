@@ -33,7 +33,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         List<Customer> customers = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
-            ResultSet result = statement.executeQuery();
             customers = CustomerRepositoryHandler.processResultSet(statement.executeQuery());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -68,9 +67,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (customer != null)
-            return customer;
-        return null;
+
+        return customer;
     }
 
     // Returns Customer object based on name
@@ -79,7 +77,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         name = name.strip();
         String firstName = name;
         String lastName = name;
-        if(name.indexOf(" ") != -1) {
+        if(name.contains(" ")) {
             firstName = name.split(" ")[0];
             lastName = name.split(" ")[1];
         }
@@ -97,9 +95,27 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customers;
     }
 
+    // Adds given Customer object to DB
     @Override
-    public int insert(Customer object) {
-        return 0;
+    public int insert(Customer customer) {
+        String sql = "INSERT INTO customer (first_name, last_name, country, postal_code, phone, email) VALUES (?, ?, ?, ?, ?, ?)";
+        int result = 0;
+
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, customer.firstName());
+            statement.setString(2, customer.lastName());
+            statement.setString(3, customer.country());
+            statement.setString(4, customer.postalCode());
+            statement.setString(5, customer.phoneNumber());
+            statement.setString(6, customer.email());
+
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override
