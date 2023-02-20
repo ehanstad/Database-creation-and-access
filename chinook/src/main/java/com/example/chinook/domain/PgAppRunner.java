@@ -33,6 +33,7 @@ public class PgAppRunner implements ApplicationRunner {
 //        for (int i = 0; i < cust.size(); i++) {
 //            System.out.println(cust.get(i).firstName());
 //        }
+        System.out.println(customerRepository.mostPopularCountry().name());
 
     }
 }

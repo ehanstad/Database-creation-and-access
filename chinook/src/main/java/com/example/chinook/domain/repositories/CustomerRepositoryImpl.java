@@ -2,6 +2,7 @@ package com.example.chinook.domain.repositories;
 
 import com.example.chinook.domain.models.Customer;
 import com.example.chinook.domain.CustomerRepositoryHandler;
+import com.example.chinook.domain.models.CustomerCountry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +34,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         List<Customer> customers = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
-            customers = CustomerRepositoryHandler.processResultSet(statement.executeQuery());
+            customers = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -48,7 +49,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, limit);
             statement.setInt(2, offset);
-            customers = CustomerRepositoryHandler.processResultSet(statement.executeQuery());
+            customers = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -63,7 +64,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
-            customer = CustomerRepositoryHandler.processResultSet(statement.executeQuery()).get(0);
+            customer = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery()).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -88,7 +89,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, firstName);
             statement.setString(2, lastName);
-            customers = CustomerRepositoryHandler.processResultSet(statement.executeQuery());
+            customers = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -149,5 +150,24 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public int deleteById(Integer id) {
         return 0;
+    }
+
+    @Override
+    public CustomerCountry mostPopularCountry() {
+        String sql = "" +
+                "SELECT country, COUNT(country) AS no_customers " +
+                "FROM customer " +
+                "GROUP BY country " +
+                "ORDER BY no_customers DESC " +
+                "LIMIT 1";
+        CustomerCountry country = null;
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            country = CustomerRepositoryHandler.processCountryResultSet(statement.executeQuery()).get(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return country;
     }
 }
