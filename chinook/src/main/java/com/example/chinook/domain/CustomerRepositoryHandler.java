@@ -2,6 +2,7 @@ package com.example.chinook.domain;
 
 import com.example.chinook.domain.models.Customer;
 import com.example.chinook.domain.models.CustomerCountry;
+import com.example.chinook.domain.models.CustomerSpender;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,5 +37,20 @@ public class CustomerRepositoryHandler {
             countries.add(country);
         }
         return countries;
+    }
+
+    public static List<CustomerSpender> processCustomerSpenderResultSet(ResultSet result) throws SQLException{
+        List<CustomerSpender> customerSpenders = new ArrayList<>();
+        while(result.next()) {
+            CustomerSpender customerSpender = new CustomerSpender (
+                    result.getInt("customer_id"),
+                    result.getString("first_name"),
+                    result.getString("last_name"),
+                    result.getInt("total_transactions"),
+                    result.getDouble("total")
+            );
+            customerSpenders.add(customerSpender);
+        }
+        return customerSpenders;
     }
 }

@@ -3,6 +3,7 @@ package com.example.chinook.domain.repositories;
 import com.example.chinook.domain.models.Customer;
 import com.example.chinook.domain.CustomerRepositoryHandler;
 import com.example.chinook.domain.models.CustomerCountry;
+import com.example.chinook.domain.models.CustomerSpender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -153,7 +154,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     @Override
-    public CustomerCountry mostPopularCountry() {
+    public CustomerCountry getMostPopularCountry() {
         String sql = "" +
                 "SELECT country, COUNT(country) AS no_customers " +
                 "FROM customer " +
@@ -169,5 +170,27 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             e.printStackTrace();
         }
         return country;
+    }
+
+    // Gets biggest spender
+    @Override
+    public CustomerSpender getBiggestSpender() {
+        String sql = "" +
+                "SELECT customer.customer_id, first_name, last_name, COUNT(total) AS total_transactions, SUM(total) AS total " +
+                "FROM customer " +
+                "INNER JOIN invoice " +
+                "ON customer.customer_id = invoice.customer_id " +
+                "GROUP BY customer.customer_id " +
+                "ORDER BY total DESC " +
+                "LIMIT 1";
+        CustomerSpender customerSpender = null;
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            customerSpender = CustomerRepositoryHandler.processCustomerSpenderResultSet(statement.executeQuery()).get(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerSpender;
     }
 }
