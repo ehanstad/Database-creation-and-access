@@ -3,19 +3,19 @@ DROP TABLE IF EXISTS assistant;
 DROP TABLE IF EXISTS power;
 
 CREATE TABLE superhero (
-  id int PRIMARY KEY,
+  id int PRIMARY KEY AUTO_INCREMENT,
   name varchar(50) NOT NULL,
   alias varchar(50),
   origin varchar(50)
 );
 
 CREATE TABLE assistant (
-  id int PRIMARY KEY,
+  id int PRIMARY KEY AUTO_INCREMENT,
   name varchar(50) NOT NULL
 );
 
 CREATE TABLE power (
-  id int PRIMARY KEY,
+  id int PRIMARY KEY AUTO_INCREMENT,
   name varchar(50) NOT NULL,
   description varchar(50) NOT NULL
 );
