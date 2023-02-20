@@ -1,4 +1,4 @@
-package com.example.chinook;
+package com.example.chinook.domain;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
