@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-/src/main/resources/
+chinook/src/main/resources/application.properties
