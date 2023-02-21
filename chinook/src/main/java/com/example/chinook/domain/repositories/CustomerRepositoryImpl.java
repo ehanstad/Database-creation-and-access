@@ -38,14 +38,14 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public List<Customer> findAll() {
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer;";
-        List<Customer> customers = new ArrayList<>();
+        List<Customer> customerList = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
-            customers = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
+            customerList = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return customers;
+        return customerList;
     }
 
     /**
@@ -57,31 +57,34 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public List<Customer> findAll(int limit, int offset) {
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer LIMIT ? OFFSET ?";
-        List<Customer> customers = new ArrayList<>();
+        List<Customer> customerList = new ArrayList<>();
+
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, limit);
             statement.setInt(2, offset);
-            customers = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
+            customerList = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return customers;
+
+        return customerList;
     }
 
     /**
      *
-     * @param id
+     * @param customerId
      * @return
      */
     // Returns Customer object based on id
     @Override
-    public Customer findById(Integer id) {
+    public Customer findById(Integer customerId) {
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer WHERE customer_id = ?";
         Customer customer = null;
+
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setInt(1, customerId);
             customer = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery()).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,31 +95,32 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     /**
      *
-     * @param name
+     * @param customerName
      * @return
      */
     // Returns Customer object based on name
     @Override
-    public List<Customer> findByName(String name) {
-        name = name.strip();
-        String firstName = name;
-        String lastName = name;
-        if(name.contains(" ")) {
-            firstName = name.split(" ")[0];
-            lastName = name.split(" ")[1];
+    public List<Customer> findCustomerByName(String customerName) {
+        String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer WHERE first_name LIKE '%' || ? || '%' OR last_name LIKE '%' || ? || '%'";
+        List<Customer> customerList = new ArrayList<>();
+        customerName = customerName.strip();
+        String firstName = customerName;
+        String lastName = customerName;
+
+        if(customerName.contains(" ")) {
+            firstName = customerName.split(" ")[0];
+            lastName = customerName.split(" ")[1];
         }
 
-        String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer WHERE first_name LIKE '%' || ? || '%' OR last_name LIKE '%' || ? || '%'";
-        List<Customer> customers = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, firstName);
             statement.setString(2, lastName);
-            customers = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
+            customerList = CustomerRepositoryHandler.processCustomerResultSet(statement.executeQuery());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return customers;
+        return customerList;
     }
 
     /**
@@ -177,22 +181,35 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     /**
      *
-     * @param object
+     * @param customer
      * @return
      */
     @Override
-    public int delete(Customer object) {
-        return 0;
+    public int delete(Customer customer) {
+        return deleteById(customer.id());
     }
 
     /**
      *
-     * @param id
+     * @param customerId
      * @return
      */
     @Override
-    public int deleteById(Integer id) {
-        return 0;
+    public int deleteById(Integer customerId) {
+        String sql = "DELETE FROM customer WHERE customer_id = ?";
+        int result = 0;
+
+        try(Connection conn = DriverManager.getConnection(url, username, password)){
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, customerId);
+            result = statement.executeUpdate();
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     /**
@@ -208,6 +225,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 "ORDER BY no_customers DESC " +
                 "LIMIT 1";
         CustomerCountry country = null;
+
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
             country = CustomerRepositoryHandler.processCountryResultSet(statement.executeQuery()).get(0);
@@ -234,6 +252,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 "ORDER BY total DESC " +
                 "LIMIT 1";
         CustomerSpender customerSpender = null;
+
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
             customerSpender = CustomerRepositoryHandler.processCustomerSpenderResultSet(statement.executeQuery()).get(0);

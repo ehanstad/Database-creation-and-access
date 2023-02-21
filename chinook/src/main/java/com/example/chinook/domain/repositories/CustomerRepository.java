@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface CustomerRepository extends CRUDRepository<Customer, Integer> {
     List<Customer> findAll(int limit, int offset);
-    List<Customer> findByName(String name);
+    List<Customer> findCustomerByName(String customerName);
     CustomerCountry getMostPopularCountry();
     CustomerSpender getBiggestSpender();
-    CustomerGenre getMostPopularGenres(Integer id);
+    CustomerGenre getMostPopularGenres(Integer customerId);
 }
