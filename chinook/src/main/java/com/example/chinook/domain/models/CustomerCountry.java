@@ -1,9 +1,8 @@
 package com.example.chinook.domain.models;
 
 /**
- *
- * @param name
- * @param registeredCustomers
+ * A model for a country with registered customers
+ * @param countryName The name of the country
+ * @param registeredCustomers the number of registered customers
  */
-public record CustomerCountry(String name, int registeredCustomers) {
-}
+public record CustomerCountry(String countryName, int registeredCustomers) { }

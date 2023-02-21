@@ -1,7 +1,7 @@
 package com.example.chinook.domain.models;
 
 /**
- *
+ * A model for a costumer
  * @param id
  * @param firstName
  * @param lastName
@@ -10,5 +10,4 @@ package com.example.chinook.domain.models;
  * @param phoneNumber
  * @param email
  */
-public record Customer(Integer id, String firstName, String lastName, String country, String postalCode, String phoneNumber, String email) {
-}
+public record Customer(Integer id, String firstName, String lastName, String country, String postalCode, String phoneNumber, String email) { }

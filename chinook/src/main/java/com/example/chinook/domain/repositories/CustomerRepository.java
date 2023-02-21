@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface CustomerRepository extends CRUDRepository<Customer, Integer> {
     List<Customer> findAll(int limit, int offset);
-    List<Customer> findCustomerByName(String customerName);
+    List<Customer> findCustomersByName(String customerName);
     CustomerCountry getMostPopularCountry();
     CustomerSpender getBiggestSpender();
     CustomerGenre getMostPopularGenres(Integer customerId);
