@@ -1,4 +1,6 @@
 package com.example.chinook.domain.models;
 
-public record CustomerGenre(int customerId, String firstName, String lastName, String genreName) {
+import java.util.List;
+
+public record CustomerGenre(int customerId, String firstName, String lastName, List<String> genres) {
 }

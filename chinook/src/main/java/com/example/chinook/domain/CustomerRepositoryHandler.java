@@ -2,7 +2,9 @@ package com.example.chinook.domain;
 
 import com.example.chinook.domain.models.Customer;
 import com.example.chinook.domain.models.CustomerCountry;
+import com.example.chinook.domain.models.CustomerGenre;
 import com.example.chinook.domain.models.CustomerSpender;
+import org.springframework.beans.MutablePropertyValues;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,5 +54,30 @@ public class CustomerRepositoryHandler {
             customerSpenders.add(customerSpender);
         }
         return customerSpenders;
+    }
+
+    public static List<CustomerGenre> processCustomerGenreResultSet(ResultSet result) throws SQLException {
+        List<CustomerGenre> customerGenres = new ArrayList<>();
+        List<String> genres = new ArrayList<>();
+        int customerId = 0;
+        String firstName = "", lastName = "";
+        Integer genreFrequency = null;
+        while(result.next()) {
+            if (genreFrequency == null) {
+                genreFrequency = result.getInt("frequency");
+                customerId = result.getInt("customer_id");
+                firstName = result.getString("first_name");
+                lastName = result.getString("last_name");
+                genres.add(result.getString("name"));
+                continue;
+            }
+            if (result.getInt("frequency") == genreFrequency) {
+                genres.add(result.getString("name"));
+                continue;
+            }
+            break;
+        }
+        customerGenres.add(new CustomerGenre(customerId, firstName, lastName, genres));
+        return customerGenres;
     }
 }
