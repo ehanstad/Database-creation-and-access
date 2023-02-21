@@ -30,6 +30,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     // Returns list of Customer objects consisting of all customers in DB
+
+    /**
+     *
+     * @return
+     */
     @Override
     public List<Customer> findAll() {
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer;";
@@ -43,6 +48,12 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customers;
     }
 
+    /**
+     *
+     * @param limit
+     * @param offset
+     * @return
+     */
     @Override
     public List<Customer> findAll(int limit, int offset) {
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email FROM customer LIMIT ? OFFSET ?";
@@ -58,6 +69,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customers;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     // Returns Customer object based on id
     @Override
     public Customer findById(Integer id) {
@@ -74,6 +90,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customer;
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     // Returns Customer object based on name
     @Override
     public List<Customer> findByName(String name) {
@@ -98,6 +119,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customers;
     }
 
+    /**
+     *
+     * @param customer
+     * @return
+     */
     // Adds given Customer object to DB
     @Override
     public int insert(Customer customer) {
@@ -121,6 +147,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return result;
     }
 
+    /**
+     *
+     * @param customer
+     * @return
+     */
     @Override
     public int update(Customer customer) {
         String sql = "UPDATE customer SET first_name = ?, last_name = ?, country = ?, postal_code = ?, phone = ?, email = ? WHERE customer_id = ?";
@@ -144,16 +175,30 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return result;
     }
 
+    /**
+     *
+     * @param object
+     * @return
+     */
     @Override
     public int delete(Customer object) {
         return 0;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public int deleteById(Integer id) {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public CustomerCountry getMostPopularCountry() {
         String sql = "" +
@@ -173,6 +218,10 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return country;
     }
 
+    /**
+     *
+     * @return
+     */
     // Gets biggest spender
     @Override
     public CustomerSpender getBiggestSpender() {
@@ -195,6 +244,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customerSpender;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public CustomerGenre getMostPopularGenres(Integer id) {
         String sql = "" +

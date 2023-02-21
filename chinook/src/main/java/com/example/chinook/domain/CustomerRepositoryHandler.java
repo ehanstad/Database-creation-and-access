@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerRepositoryHandler {
+
+    /**
+     *
+     * @param result
+     * @return
+     * @throws SQLException
+     */
     public static List<Customer> processCustomerResultSet(ResultSet result) throws SQLException {
         List<Customer> customers = new ArrayList<>();
         while(result.next()) {
@@ -29,6 +36,12 @@ public class CustomerRepositoryHandler {
         return customers;
     }
 
+    /**
+     *
+     * @param result
+     * @return
+     * @throws SQLException
+     */
     public static List<CustomerCountry> processCountryResultSet(ResultSet result) throws SQLException {
         List<CustomerCountry> countries = new ArrayList<>();
         while(result.next()) {
@@ -41,6 +54,12 @@ public class CustomerRepositoryHandler {
         return countries;
     }
 
+    /**
+     *
+     * @param result
+     * @return
+     * @throws SQLException
+     */
     public static List<CustomerSpender> processCustomerSpenderResultSet(ResultSet result) throws SQLException{
         List<CustomerSpender> customerSpenders = new ArrayList<>();
         while(result.next()) {
@@ -56,6 +75,12 @@ public class CustomerRepositoryHandler {
         return customerSpenders;
     }
 
+    /**
+     *
+     * @param result
+     * @return
+     * @throws SQLException
+     */
     public static List<CustomerGenre> processCustomerGenreResultSet(ResultSet result) throws SQLException {
         List<CustomerGenre> customerGenres = new ArrayList<>();
         List<String> genres = new ArrayList<>();

@@ -20,21 +20,11 @@ public class PgAppRunner implements ApplicationRunner {
         this.customerRepository = customerRepository;
     }
 
+    /**
+     *
+     * @param args
+     */
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-//        List<Customer> customers = customerRepository.findAll(10, 10);
-//        for (int i = 0; i < customers.size(); i++) {
-//            System.out.println(customers.get(i).firstName());
-//        }
-//        Customer cust = customerRepository.findById(1);
-//        System.out.println((customerRepository.insert(new Customer(null, "Hasse", "Aro", "Schweden", "18650", "+4688383", "hasse.aro@live.se"))));
-//        System.out.println(customerRepository.update(new Customer(60, "Hasse", "Bravo", "Schweden", "18650", "+4688383", "hasse.aro@live.com")));
-//        List<Customer> cust = customerRepository.findByName("");
-//        for (int i = 0; i < cust.size(); i++) {
-//            System.out.println(cust.get(i).firstName());
-//        }
-//        System.out.println(customerRepository.getBiggestSpender().toString());
-        System.out.println(customerRepository.getMostPopularGenres(1));
-
+    public void run(ApplicationArguments args) {
     }
 }
