@@ -1,14 +1,10 @@
 package com.example.chinook.domain;
 
-import com.example.chinook.domain.models.Customer;
-
 import com.example.chinook.domain.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class PgAppRunner implements ApplicationRunner {
@@ -22,7 +18,7 @@ public class PgAppRunner implements ApplicationRunner {
 
     /**
      *
-     * @param args
+     * @param   args    the run args
      */
     @Override
     public void run(ApplicationArguments args) {

@@ -3,7 +3,7 @@ package com.example.chinook.domain.models;
 import java.util.List;
 
 /**
- * A model of a customers information and it´s most popular genres
+ * A model of a customer's information and their most popular genres
  * @param customerId
  * @param firstName
  * @param lastName

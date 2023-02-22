@@ -1,7 +1,7 @@
 package com.example.chinook.domain.models;
 
 /**
- * A model of a customers and it's transactions
+ * A model of a customer's and their transactions
  * @param customerId
  * @param firstName
  * @param lastName
