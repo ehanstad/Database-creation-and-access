@@ -140,6 +140,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     // Adds given Customer object to DB
     @Override
     public int insert(Customer customer) {
+        if (customer == null)
+            return 0;
+
         String sql = "" +
                 "INSERT INTO customer (first_name, last_name, country, postal_code, phone, email) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -163,12 +166,15 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     * Updates a 
-     * @param customer
-     * @return
+     * Updates customer with params customer id with the values that the object customer contains
+     * @param customer an instance of a customer
+     * @return a result depending on the insertion worked or not
      */
     @Override
     public int update(Customer customer) {
+        if (customer == null)
+            return 0;
+
         String sql = "" +
                 "UPDATE customer SET first_name = ?, last_name = ?, country = ?, postal_code = ?, phone = ?, email = ? " +
                 "WHERE customer_id = ?";
@@ -193,9 +199,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     *
-     * @param customer
-     * @return
+     * Deletes the param customer form a postgres database
+     * @param customer an instance of a customer
+     * @return a result depending on the insertion worked or not
      */
     @Override
     public int delete(Customer customer) {
@@ -203,12 +209,15 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     *
-     * @param customerId
-     * @return
+     * Deletes the customer form a postgres database with the param customer id
+     * @param customerId an integer containing the customer id
+     * @return a result depending on the insertion worked or not
      */
     @Override
     public int deleteById(Integer customerId) {
+        if (customerId == null)
+            return 0;
+
         String sql = "DELETE FROM customer WHERE customer_id = ?";
         int result = 0;
 
@@ -226,8 +235,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     *
-     * @return
+     * Gets the country with most customers in a postgres database
+     * @return an instance of a customer country
      */
     @Override
     public CustomerCountry getMostPopularCountry() {
@@ -250,10 +259,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     *
-     * @return
+     * Gets the customer who spent most money from a postgres database
+     * @return an instance of a customer spender
      */
-    // Gets biggest spender
     @Override
     public CustomerSpender getBiggestSpender() {
         String sql = "" +
@@ -277,12 +285,15 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * Gets the most popular genres for a specific customer from a postgres database
+     * @param customerId the id for a customer
+     * @return an instance of a customer genre
      */
     @Override
-    public CustomerGenre getMostPopularGenres(Integer id) {
+    public CustomerGenre getMostPopularGenres(Integer customerId) {
+        if (customerId == null)
+            return null;
+
         String sql = "" +
                 "SELECT COUNT(genre.name) AS frequency, customer.customer_id, first_name, last_name, genre.name " +
                 "FROM customer, genre, invoice, invoice_line, track " +
@@ -296,7 +307,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         CustomerGenre customerGenre = null;
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setInt(1, customerId);
             customerGenre = CustomerRepositoryHandler.processCustomerGenreResultSet(statement.executeQuery());
 
         } catch (SQLException e) {
