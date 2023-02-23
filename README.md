@@ -13,7 +13,7 @@ The prime focus of the project was to create a connection between Java and a pos
 ### File structure
 The project uses a hexagonal architecture. As shown in the picture below the it uses a package for the `/models` in this case records and `/repositories` containing the **CRUD** and the more specific one for Customer.
 
-![file-structure](/Database-creation-and-access/chinook/src/main/resources/file-structure.jpg)
+![file-structure](/chinook/src/main/resources/file-structure.jpg)
 
 #### Authors
 - Melvin Hedenfalk
