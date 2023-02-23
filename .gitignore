@@ -1,3 +1,1 @@
-
-chinook/src/main/resources/application.properties
-chinook/src/main/resources/application.properties
+./chinook/src/main/resources/*

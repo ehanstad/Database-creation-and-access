@@ -16,10 +16,6 @@ public class PgAppRunner implements ApplicationRunner {
         this.customerRepository = customerRepository;
     }
 
-    /**
-     *
-     * @param   args    the run args
-     */
     @Override
     public void run(ApplicationArguments args) {
     }
